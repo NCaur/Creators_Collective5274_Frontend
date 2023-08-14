@@ -10,7 +10,7 @@ const HistoryScreen = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get('http://192.168.2.30:4000/journalentry/fetchJournalEntries'); 
-      setJournalEntries(response.data);
+      setJournalEntries(response.data.slice(0, 5));
     } catch (error) {
       console.error('Error fetching journal entries:', error);
     }
@@ -19,7 +19,7 @@ const HistoryScreen = () => {
   useEffect(() => {
     // Fetch data from MongoDB
     fetchData();
-  }, [1]);
+  }, [journalEntries]);
 
  
 
@@ -39,7 +39,7 @@ const HistoryScreen = () => {
     <View style={styles.container}>
       <SafeAreaView  style={styles.droidSafeArea}>
       <FlatList
-        data={journalEntries}
+        data={journalEntries.reverse()}
         renderItem={renderItem}
         keyExtractor={(item) => item._id}
       />
