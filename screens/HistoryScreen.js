@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f0f0f0',
     padding: 20,
+    marginTop:2
   },
 
   moodText: {
@@ -64,6 +65,7 @@ const styles = StyleSheet.create({
     marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 0
 },
   entryContainer: {
+    marginTop:2,
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 10,
