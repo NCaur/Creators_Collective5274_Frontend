@@ -24,7 +24,6 @@ const CustomHeader = ({ navigation }) => {
 
 const DashboardTabs = () => (
   <Drawer.Navigator drawerContent={() => <ProfileScreen />}>
-    <Drawer.Screen name="Profile" component={ProfileScreen} />
     <Drawer.Screen name="Mood Diary" component={TabStack} />
   </Drawer.Navigator>
 );
