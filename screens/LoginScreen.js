@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native'; 
 import axios from 'axios'; //for API calls
 import DashboardTabs from './DashboardScreen';
@@ -16,7 +16,7 @@ const LoginScreen = () => {
         username,
         password,
       });
-
+      const userEmail = response.data.email;
     // Handle successful login here (e.g., save token and navigate to another screen)
    // navigation.navigate('SelectMood');
   navigation.navigate('Dashboard');
@@ -40,6 +40,7 @@ const LoginScreen = () => {
   };
 
   return (
+    
     <View style={styles.container}>
       <Text style={styles.title}>Mood Diary Journal</Text>
       <TextInput

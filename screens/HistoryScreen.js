@@ -10,7 +10,7 @@ const HistoryScreen = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get('http://192.168.2.30:4000/journalentry/fetchJournalEntries'); 
-      setJournalEntries(response.data.slice(0, 5));
+      setJournalEntries(response.data.reverse().slice(0,5));
     } catch (error) {
       console.error('Error fetching journal entries:', error);
     }
@@ -24,22 +24,34 @@ const HistoryScreen = () => {
  
 
   const renderItem = ({ item }) => {
-    const formattedDate = new Date(item.date).toLocaleDateString();
+    // Convert the timestamp to a JavaScript Date object
+    const dateObject = new Date(item.date);
+    
+    // Get the UTC date components
+    const utcDay = dateObject.getUTCDate();
+    const utcMonth = dateObject.getUTCMonth() + 1; // Month is zero-based, so add 1
+    const utcYear = dateObject.getUTCFullYear();
+    
+    // Create a UTC formatted date string
+    const utcFormattedDate = `${utcMonth}/${utcDay}/${utcYear}`;
+    
     return (
       <View style={styles.entryContainer}>
-        <Text style={styles.dateText}>{formattedDate}</Text>
+        <Text style={styles.dateText}>{utcFormattedDate}</Text>
         <Text>{item.moodEmoji}</Text>
         <Text style={styles.moodText}>Mood: {item.mood}</Text>
         <Text style={styles.entryText}>{item.text}</Text>
       </View>
     );
   };
+  
+  
 
   return (
     <View style={styles.container}>
       <SafeAreaView  style={styles.droidSafeArea}>
       <FlatList
-        data={journalEntries.reverse()}
+        data={journalEntries}
         renderItem={renderItem}
         keyExtractor={(item) => item._id}
       />

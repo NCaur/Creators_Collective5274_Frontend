@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, TouchableOpacity, Text } from 'react-native';
+import { Image, TouchableOpacity, Text,View,SafeAreaView,Platform,StatusBar, StyleSheet  } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useNavigation } from '@react-navigation/native';
@@ -9,34 +9,46 @@ import ChatScreen from './ChatScreen';
 import CalendarScreen from './CalendarScreen';
 import SelectMoodScreen from './SelectMoodScreen';
 import LogoutScreen from './LogoutScreen';
-import ProfileScreen from './ProfileScreen'; // You need to create this screen
+
 
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 
-const CustomHeader = ({ navigation }) => {
+const CustomDrawerContent = () => {
+  const navigation = useNavigation();
+
+
+
+  const handleLogoutPress = () => {
+    navigation.navigate('Logout');
+  };
+
   return (
-    <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
-      <Image source={require('../assets/drawer.png')} style={{ width: 40, height: 40, marginTop: 5 }} />
-    </TouchableOpacity>
+    <SafeAreaView style={styles.droidSafeArea}>
+    <View>
+      {/* Your drawer header */}
+      <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+       
+      </TouchableOpacity>
+
+     
+
+      <TouchableOpacity onPress={handleLogoutPress}>
+        <Text>Logout</Text>
+      </TouchableOpacity>
+    </View>
+    </SafeAreaView>
   );
 };
 
 const DashboardTabs = () => (
-  <Drawer.Navigator drawerContent={() => <ProfileScreen />}>
-    <Drawer.Screen name="Mood Diary" component={TabStack} />
+  <Drawer.Navigator drawerContent={CustomDrawerContent}>
+    <Drawer.Screen name="Mood Dairy" component={TabStack} />
   </Drawer.Navigator>
 );
 
-const TabStack = ({ navigation, route }) => {
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      //headerTitle: route.state ? route.state.routes[route.state.index].name : 'History',
-      headerLeft: () => <CustomHeader navigation={navigation} />,
-    });
-  }, [navigation, route]);
-
-  return (
+const TabStack = () => {
+  return(
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
@@ -62,9 +74,30 @@ const TabStack = ({ navigation, route }) => {
       <Tab.Screen name="MoodJournal" component={SelectMoodScreen}  options={{ headerShown: false }} />
       <Tab.Screen name="Calendar" component={CalendarScreen}  options={{ headerShown: false }}  />
       <Tab.Screen name="Chat" component={ChatScreen}  options={{ headerShown: false }} />
+    
       <Tab.Screen name="Logout" component={LogoutScreen}  options={{ headerShown: false }} />
     </Tab.Navigator>
-  );
+  )
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+  
+    backgroundColor: "#15193c",
+    padding: 8,
+    
+  },
+    containerLight: {
+    flex: 1,
+    backgroundColor: "white",
+    justifyContent: 'center',
+    padding: 8,
+  },
+  droidSafeArea: {
+    marginTop: Platform.OS === "android" ? StatusBar.currentHeight : 35
+  },
+})
 
 export default DashboardTabs;
